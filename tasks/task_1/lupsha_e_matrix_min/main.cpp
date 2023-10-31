@@ -1,3 +1,5 @@
+// Copyright 2023 Lupsha Egor
+
 #include <gtest/gtest.h>
 #include <vector>
 #include <boost/mpi/environment.hpp>

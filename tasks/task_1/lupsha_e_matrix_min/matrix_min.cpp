@@ -1,3 +1,5 @@
+// Copyright 2023 Lupsha Egor
+
 #include <algorithm>
 #include <random>
 #include <boost/mpi/communicator.hpp>
@@ -19,7 +21,7 @@ std::vector<std::vector<int>> get_random_matrix(int rows, int cols) {
     return matrix;
 }
 int get_matrix_min_seq(const std::vector<std::vector<int>>& matrix) {
-	int min = matrix[0][0];
+    int min = matrix[0][0];
     for (size_t i = 0; i < matrix.size(); ++i) {
         for (size_t j = 0; j < matrix[i].size(); ++j) {
             if (matrix[i][j] < min) {
@@ -30,7 +32,7 @@ int get_matrix_min_seq(const std::vector<std::vector<int>>& matrix) {
     return min;
 }
 int get_matrix_min_prl(const std::vector<std::vector<int>>& matrix) {
-	mpi::environment env;
+    mpi::environment env;
     mpi::communicator comm;
 
     const int numRows = matrix.size();
