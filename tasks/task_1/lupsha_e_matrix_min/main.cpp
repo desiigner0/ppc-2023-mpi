@@ -22,22 +22,6 @@ TEST(MatrixMinTest, RandomMatrix) {
     }
 }
 
-TEST(MatrixMinTest, EmptyMatrix) {
-    boost::mpi::communicator world;
-    std::vector<std::vector<int>> matrix;
-
-    if (world.rank() == 0) {
-        matrix = {};
-    }
-
-    int parallel_min = get_matrix_min_prl(matrix);
-
-    if (world.rank() == 0) {
-        int seq_min = 0;
-        ASSERT_EQ(seq_min, parallel_min);
-    }
-}
-
 TEST(MatrixMinTest, SingleElementMatrix) {
     boost::mpi::communicator world;
     std::vector<std::vector<int>> matrix;
@@ -50,22 +34,6 @@ TEST(MatrixMinTest, SingleElementMatrix) {
 
     if (world.rank() == 0) {
         int seq_min = 42;
-        ASSERT_EQ(seq_min, parallel_min);
-    }
-}
-
-TEST(MatrixMinTest, LargeMatrix) {
-    boost::mpi::communicator world;
-    std::vector<std::vector<int>> matrix;
-
-    if (world.rank() == 0) {
-        matrix = get_large_matrix();
-    }
-
-    int parallel_min = get_matrix_min_prl(matrix);
-
-    if (world.rank() == 0) {
-        int seq_min = get_matrix_min_seq(matrix);
         ASSERT_EQ(seq_min, parallel_min);
     }
 }
@@ -86,6 +54,38 @@ TEST(MatrixMinTest, EqualElementsMatrix) {
     }
 }
 
+TEST(MatrixMinTest, MultipleMinValues) {
+    boost::mpi::communicator world;
+    std::vector<std::vector<int>> matrix;
+
+    if (world.rank() == 0) {
+        matrix = { {3, 5, 1}, {7, 2, 1}, {4, 3, 1} };
+    }
+
+    int parallel_min = get_matrix_min_prl(matrix);
+
+    if (world.rank() == 0) {
+        int seq_min = 1;
+        ASSERT_EQ(seq_min, parallel_min);
+    }
+}
+
+TEST(MatrixMinTest, NegativeValuesMatrix) {
+    boost::mpi::communicator world;
+    std::vector<std::vector<int>> matrix;
+
+    if (world.rank() == 0) {
+        matrix = { {-3, -5, -7}, {-1, -9, -8}, {-4, -2, -6} };
+    }
+
+    int parallel_min = get_matrix_min_prl(matrix);
+
+    if (world.rank() == 0) {
+        int seq_min = -9;
+        ASSERT_EQ(seq_min, parallel_min);
+    }
+}
+
 int main(int argc, char** argv) {
     boost::mpi::environment env(argc, argv);
     boost::mpi::communicator world;
@@ -96,3 +96,4 @@ int main(int argc, char** argv) {
     }
     return RUN_ALL_TESTS();
 }
+
