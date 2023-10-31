@@ -1,10 +1,11 @@
 // Copyright 2023 Lupsha Egor
 
+#include <task_1/lupsha_e_matrix_min/matrix_min.h>
+
 #include <algorithm>
 #include <random>
 #include <boost/mpi/communicator.hpp>
 #include <boost/mpi/collectives.hpp>
-#include <task_1/lupsha_e_matrix_min/matrix_min.h>
 
 namespace mpi = boost::mpi;
 
